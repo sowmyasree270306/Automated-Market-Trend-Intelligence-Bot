@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>API Product Explorer</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        body {
+            background: #f4f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        .top-header {
+            background: white;
+            border-radius: 0 0 16px 16px;
+            padding: 22px 26px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+        }
+
+        .top-header h1 {
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .top-header p {
+            color: #64748b;
+            margin-bottom: 0;
+        }
+
+        .back-btn {
+            border: 1px solid #64748b;
+            background: white;
+            padding: 9px 16px;
+            border-radius: 7px;
+            text-decoration: none;
+            color: #334155;
+        }
+
+        .back-btn:hover {
+            background: #f1f5f9;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+            height: 100%;
+        }
+
+        .stat-title {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .filter-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 20px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #334155;
+        }
+
+        .form-control,
+        .form-select {
+            min-height: 42px;
+        }
+
+        .apply-btn {
+            background: #2563eb;
+            border: none;
+            color: white;
+            padding: 10px 17px;
+            border-radius: 7px;
+        }
+
+        .apply-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .reset-btn {
+            padding: 10px 17px;
+            border-radius: 7px;
+        }
+
+        .product-section {
+            margin-top: 24px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            height: 100%;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+            transition: 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.10);
+        }
+
+        .product-image {
+            height: 190px;
+            width: 100%;
+            object-fit: contain;
+            padding: 15px;
+            background: #f8fafc;
+        }
+
+        .product-body {
+            padding: 17px;
+        }
+
+        .product-title {
+            font-size: 16px;
+            font-weight: 600;
+            min-height: 48px;
+            margin-bottom: 8px;
+        }
+
+        .product-brand {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .price {
+            font-size: 21px;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        .rating {
+            color: #f59e0b;
+            font-weight: 600;
+        }
+
+        .discount {
+            color: #16a34a;
+            font-weight: 600;
+        }
+
+        .stock {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .in-stock {
+            color: #16a34a;
+        }
+
+        .out-stock {
+            color: #dc2626;
+        }
+
+        .empty-box {
+            background: #fff7d6;
+            border: 1px solid #f1d77a;
+            padding: 20px;
+            border-radius: 8px;
+            color: #795700;
+        }
+
+        .result-info {
+            font-size: 15px;
+            color: #64748b;
+        }
+
+        .pagination .page-link {
+            color: #2563eb;
+        }
+
+        .pagination .active .page-link {
+            background: #2563eb;
+            border-color: #2563eb;
+            color: white;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container-fluid px-0">
+
+    <!-- ==========================================
+         HEADER
+         ========================================== -->
+
+    <div class="top-header">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h1>
+                    <i class="fa-solid fa-database"></i>
+                    API Product Explorer
+                </h1>
+
+                <p>
+                    Explore the complete API-powered product catalog.
+                </p>
+
+            </div>
+
+            <a href="/dashboard"
+               class="back-btn">
+
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="container-fluid px-4">
+
+        <!-- ==========================================
+             STATISTICS
+             ========================================== -->
+
+        <div class="row g-3">
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="stat-card">
+
+                    <div class="stat-title">
+                        Total API Products
+                    </div>
+
+                    <div class="stat-value">
+                        {{ total_api_products }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="stat-card">
+
+                    <div class="stat-title">
+                        Average Price
+                    </div>
+
+                    <div class="stat-value">
+                        ₹{{ "{:,.2f}".format(avg_price) }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="stat-card">
+
+                    <div class="stat-title">
+                        Average Rating
+                    </div>
+
+                    <div class="stat-value">
+                        ⭐ {{ avg_rating }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="stat-card">
+
+                    <div class="stat-title">
+                        Average Discount
+                    </div>
+
+                    <div class="stat-value">
+                        {{ avg_discount }}%
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==========================================
+             FILTERS
+             ========================================== -->
+
+        <div class="filter-card">
+
+            <form method="GET"
+                  action="/api-products">
+
+                <div class="row g-3">
+
+                    <!-- Search -->
+
+                    <div class="col-lg-4 col-md-6">
+
+                        <label class="form-label">
+                            🔍 Search Products
+                        </label>
+
+                        <input
+                            type="text"
+                            name="search"
+                            class="form-control"
+                            value="{{ search }}"
+                            placeholder="Try mobile, TV, laptop, snacks...">
+
+                    </div>
+
+
+                    <!-- Category -->
+
+                    <div class="col-lg-2 col-md-6">
+
+                        <label class="form-label">
+                            Category
+                        </label>
+
+                        <select
+                            name="category"
+                            class="form-select">
+
+                            <option value="">
+                                All Categories
+                            </option>
+
+                            {% for cat in categories %}
+
+                                <option
+                                    value="{{ cat }}"
+                                    {% if selected_category == cat %}
+                                        selected
+                                    {% endif %}>
+
+                                    {{ cat|title }}
+
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Brand -->
+
+                    <div class="col-lg-2 col-md-6">
+
+                        <label class="form-label">
+                            Brand
+                        </label>
+
+                        <select
+                            name="brand"
+                            class="form-select">
+
+                            <option value="">
+                                All Brands
+                            </option>
+
+                            {% for b in brands %}
+
+                                <option
+                                    value="{{ b }}"
+                                    {% if selected_brand == b %}
+                                        selected
+                                    {% endif %}>
+
+                                    {{ b }}
+
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Minimum Price -->
+
+                    <div class="col-lg-2 col-md-6">
+
+                        <label class="form-label">
+                            Min Price (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="min_price"
+                            class="form-control"
+                            value="{{ min_price }}"
+                            placeholder="Example: 1000">
+
+                    </div>
+
+
+                    <!-- Maximum Price -->
+
+                    <div class="col-lg-2 col-md-6">
+
+                        <label class="form-label">
+                            Max Price (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="max_price"
+                            class="form-control"
+                            value="{{ max_price }}"
+                            placeholder="Example: 50000">
+
+                    </div>
+
+
+                    <!-- Rating -->
+
+                    <div class="col-lg-2 col-md-6">
+
+                        <label class="form-label">
+                            Minimum Rating
+                        </label>
+
+                        <select
+                            name="min_rating"
+                            class="form-select">
+
+                            <option value="">
+                                Any Rating
+                            </option>
+
+                            <option value="3"
+                                {% if min_rating == "3" %}selected{% endif %}>
+                                3+
+                            </option>
+
+                            <option value="3.5"
+                                {% if min_rating == "3.5" %}selected{% endif %}>
+                                3.5+
+                            </option>
+
+                            <option value="4"
+                                {% if min_rating == "4" %}selected{% endif %}>
+                                4+
+                            </option>
+
+                            <option value="4.5"
+                                {% if min_rating == "4.5" %}selected{% endif %}>
+                                4.5+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Discount -->
+
+                    <div class="col-lg-2 col-md-6">
+
+                        <label class="form-label">
+                            Minimum Discount
+                        </label>
+
+                        <select
+                            name="min_discount"
+                            class="form-select">
+
+                            <option value="">
+                                Any Discount
+                            </option>
+
+                            <option value="10"
+                                {% if min_discount == "10" %}selected{% endif %}>
+                                10%+
+                            </option>
+
+                            <option value="20"
+                                {% if min_discount == "20" %}selected{% endif %}>
+                                20%+
+                            </option>
+
+                            <option value="30"
+                                {% if min_discount == "30" %}selected{% endif %}>
+                                30%+
+                            </option>
+
+                            <option value="40"
+                                {% if min_discount == "40" %}selected{% endif %}>
+                                40%+
+                            </option>
+
+                            <option value="50"
+                                {% if min_discount == "50" %}selected{% endif %}>
+                                50%+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Stock -->
+
+                    <div class="col-lg-2 col-md-6">
+
+                        <label class="form-label">
+                            Stock
+                        </label>
+
+                        <select
+                            name="stock_status"
+                            class="form-select">
+
+                            <option value="">
+                                All Products
+                            </option>
+
+                            <option value="in_stock"
+                                {% if stock_status == "in_stock" %}
+                                    selected
+                                {% endif %}>
+                                In Stock
+                            </option>
+
+                            <option value="out_of_stock"
+                                {% if stock_status == "out_of_stock" %}
+                                    selected
+                                {% endif %}>
+                                Out of Stock
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Buttons -->
+
+                    <div class="col-lg-6 col-md-12 d-flex align-items-end gap-2">
+
+                        <button
+                            type="submit"
+                            class="apply-btn">
+
+                            <i class="fa-solid fa-filter"></i>
+                            Apply Filters
+
+                        </button>
+
+                        <a
+                            href="/api-products"
+                            class="btn btn-outline-secondary reset-btn">
+
+                            Reset
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- ==========================================
+             PRODUCT CATALOG
+             ========================================== -->
+
+        <div class="product-section">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                <div>
+
+                    <h3 class="mb-1">
+                        Product Catalog
+                    </h3>
+
+                    <div class="result-info">
+
+                        Showing
+
+                        <strong>
+                            {{ products|length }}
+                        </strong>
+
+                        products on this page
+
+                        |
+
+                        <strong>
+                            {{ total_matching }}
+                        </strong>
+
+                        matching products
+
+                    </div>
+
+                </div>
+
+                <span class="badge bg-primary">
+                    API CATALOG
+                </span>
+
+            </div>
+
+
+            <!-- ==========================================
+                 NO RESULTS
+                 ========================================== -->
+
+            {% if total_matching == 0 %}
+
+                <div class="empty-box">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    <strong>
+                        No products match your selected filters.
+                    </strong>
+
+                    <br>
+
+                    <small>
+
+                        Try removing one filter, widening the
+                        price range, or searching for a broader
+                        keyword such as mobile, TV, laptop,
+                        groceries, or snacks.
+
+                    </small>
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- ==========================================
+                 PRODUCTS
+                 ========================================== -->
+
+            <div class="row g-4">
+
+                {% for product in products %}
+
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+
+                        <div class="product-card">
+
+                            {% if product.thumbnail %}
+
+                                <img
+                                    src="{{ product.thumbnail }}"
+                                    class="product-image"
+                                    alt="{{ product.title }}">
+
+                            {% else %}
+
+                                <div
+                                    class="product-image d-flex align-items-center justify-content-center">
+
+                                    <i class="fa-solid fa-box fa-3x text-secondary"></i>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <div class="product-body">
+
+                                <div class="product-title">
+
+                                    {{ product.title }}
+
+                                </div>
+
+
+                                <div class="product-brand">
+
+                                    <i class="fa-solid fa-tag"></i>
+
+                                    {{ product.brand or "Unknown Brand" }}
+
+                                </div>
+
+
+                                <div class="price">
+
+                                    ₹{{ "{:,.2f}".format(product.price_inr) }}
+
+                                </div>
+
+
+                                <div class="mt-2">
+
+                                    <span class="rating">
+
+                                        ⭐ {{ product.rating }}
+
+                                    </span>
+
+                                    &nbsp;&nbsp;
+
+                                    <span class="discount">
+
+                                        {{ product.discount_percentage }}% OFF
+
+                                    </span>
+
+                                </div>
+
+
+                                {% if product.stock > 0 %}
+
+                                    <div class="stock in-stock mt-2">
+
+                                        <i class="fa-solid fa-circle-check"></i>
+
+                                        In Stock
+                                        ({{ product.stock }})
+
+                                    </div>
+
+                                {% else %}
+
+                                    <div class="stock out-stock mt-2">
+
+                                        <i class="fa-solid fa-circle-xmark"></i>
+
+                                        Out of Stock
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                <div class="text-muted small mt-2">
+
+                                    Category:
+                                    {{ product.category|title }}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- ==========================================
+                 PAGINATION
+                 ========================================== -->
+
+            {% if total_pages > 1 %}
+
+                <nav class="mt-4">
+
+                    <ul class="pagination justify-content-center">
+
+                        {% if page > 1 %}
+
+                            <li class="page-item">
+
+                                <a
+                                    class="page-link"
+                                    href="{{ url_for(
+                                        'api_product_explorer',
+                                        search=search,
+                                        category=selected_category,
+                                        brand=selected_brand,
+                                        min_price=min_price,
+                                        max_price=max_price,
+                                        min_rating=min_rating,
+                                        min_discount=min_discount,
+                                        stock_status=stock_status,
+                                        page=page-1
+                                    ) }}">
+
+                                    Previous
+
+                                </a>
+
+                            </li>
+
+                        {% endif %}
+
+
+                        {% for p in range(1, total_pages + 1) %}
+
+                            {% if p >= page - 2 and p <= page + 2 %}
+
+                                <li
+                                    class="page-item
+                                    {% if p == page %}
+                                        active
+                                    {% endif %}">
+
+                                    <a
+                                        class="page-link"
+                                        href="{{ url_for(
+                                            'api_product_explorer',
+                                            search=search,
+                                            category=selected_category,
+                                            brand=selected_brand,
+                                            min_price=min_price,
+                                            max_price=max_price,
+                                            min_rating=min_rating,
+                                            min_discount=min_discount,
+                                            stock_status=stock_status,
+                                            page=p
+                                        ) }}">
+
+                                        {{ p }}
+
+                                    </a>
+
+                                </li>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+
+                        {% if page < total_pages %}
+
+                            <li class="page-item">
+
+                                <a
+                                    class="page-link"
+                                    href="{{ url_for(
+                                        'api_product_explorer',
+                                        search=search,
+                                        category=selected_category,
+                                        brand=selected_brand,
+                                        min_price=min_price,
+                                        max_price=max_price,
+                                        min_rating=min_rating,
+                                        min_discount=min_discount,
+                                        stock_status=stock_status,
+                                        page=page+1
+                                    ) }}">
+
+                                    Next
+
+                                </a>
+
+                            </li>
+
+                        {% endif %}
+
+                    </ul>
+
+                </nav>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
