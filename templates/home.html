@@ -1,44 +1,278 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Automated Market & Trend Intelligence Bot</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
-<body class="bg-light">
+<body class="home-page">
 
-<div class="container text-center mt-5">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
 
-    <h1 class="text-primary">
-        Automated Market & Trend Intelligence Bot
-    </h1>
+        <div class="container">
 
-    <br>
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fa-solid fa-chart-line"></i>
+                Market Intelligence Bot
+            </a>
 
-    <p class="lead">
+            <div class="d-flex gap-2">
 
-        Analyze Amazon and Flipkart products,
-        discover trends, compare sales and
-        generate market insights.
+                <a href="/login" class="btn btn-outline-light">
+                    Login
+                </a>
 
-    </p>
+                <a href="/register" class="btn btn-light text-primary fw-bold">
+                    Register
+                </a>
 
-    <br>
+            </div>
 
-    <a href="/register" class="btn btn-success btn-lg">
-        Register
-    </a>
+        </div>
 
-    <a href="/login" class="btn btn-primary btn-lg">
-        Login
-    </a>
+    </nav>
 
-</div>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+
+        <div class="container">
+
+            <div class="row align-items-center min-vh-75">
+
+                <!-- LEFT -->
+                <div class="col-lg-7 text-white">
+
+                    <div class="badge-pill mb-4">
+                        <i class="fa-solid fa-bolt"></i>
+                        Smart Market & Trend Intelligence
+                    </div>
+
+                    <h1 class="hero-title">
+                        Search once.
+                        <span>Compare everywhere.</span>
+                    </h1>
+
+                    <p class="hero-description">
+                        Discover products, compare marketplace prices,
+                        analyze discounts, track trends and find smarter deals
+                        using data-driven market intelligence.
+                    </p>
+
+                    <div class="hero-buttons">
+
+                        <a href="/register"
+                           class="btn btn-warning btn-lg hero-btn">
+
+                            <i class="fa-solid fa-user-plus"></i>
+                            Get Started
+
+                        </a>
+
+                        <a href="/login"
+                           class="btn btn-outline-light btn-lg hero-btn">
+
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                            Login
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RIGHT -->
+                <div class="col-lg-5 mt-5 mt-lg-0">
+
+                    <div class="floating-card">
+
+                        <div class="card-icon">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+
+                        <h4>Smart Product Search</h4>
+
+                        <p>
+                            Find relevant products quickly using
+                            intelligent product matching.
+                        </p>
+
+                        <div class="marketplace-row">
+
+                            <span class="market amazon">
+                                <i class="fa-brands fa-amazon"></i>
+                                Amazon
+                            </span>
+
+                            <span class="market flipkart">
+                                Flipkart
+                            </span>
+
+                            <span class="market walmart">
+                                Walmart
+                            </span>
+
+                            <span class="market target">
+                                Best Buy
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="floating-card second-card">
+
+                        <div class="small-stat">
+
+                            <div class="stat-icon green">
+                                <i class="fa-solid fa-tags"></i>
+                            </div>
+
+                            <div>
+                                <small>Smart Deals</small>
+                                <h5>Compare Prices</h5>
+                            </div>
+
+                        </div>
+
+                        <div class="small-stat">
+
+                            <div class="stat-icon purple">
+                                <i class="fa-solid fa-chart-column"></i>
+                            </div>
+
+                            <div>
+                                <small>Market Trends</small>
+                                <h5>Data Insights</h5>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FEATURES -->
+    <section class="features-section">
+
+        <div class="container">
+
+            <div class="text-center mb-5">
+
+                <h2 class="section-title">
+                    Everything in one place
+                </h2>
+
+                <p class="section-subtitle">
+                    Explore products and understand the market using data.
+                </p>
+
+            </div>
+
+
+            <div class="row g-4">
+
+                <div class="col-md-4">
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon blue">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </div>
+
+                        <h4>Product Comparison</h4>
+
+                        <p>
+                            Compare prices, ratings, discounts and
+                            availability across marketplaces.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon purple">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+
+                        <h4>Market Trends</h4>
+
+                        <p>
+                            Analyze product prices and marketplace
+                            trends using data analytics.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon green">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+
+                        <h4>Smart Insights</h4>
+
+                        <p>
+                            Get useful insights from product,
+                            pricing and discount information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer class="custom-footer">
+
+        <p>
+            © 2026 Automated Market & Trend Intelligence Bot
+        </p>
+
+        <p class="mb-0">
+            Python • Flask • SQLite • Pandas • RapidFuzz
+        </p>
+
+    </footer>
 
 </body>
 </html>

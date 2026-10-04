@@ -1,181 +1,912 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Bot | Search</title>
 
-    <title>Search Products</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top left, #dbeafe 0%, transparent 35%),
+                radial-gradient(circle at top right, #ede9fe 0%, transparent 35%),
+                linear-gradient(135deg, #f5f7ff, #eef4ff);
+            min-height: 100vh;
+            color: #172554;
+        }
 
+        a { text-decoration: none; }
+
+        .page {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+
+        .header {
+            padding: 34px 6% 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .title-area h1 {
+            font-size: 46px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #2563eb, #7c3aed, #db2777);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .title-area p {
+            margin-top: 8px;
+            color: #64748b;
+            font-size: 17px;
+        }
+
+        .dashboard-btn {
+            background: linear-gradient(135deg, #64748b, #475569);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 13px;
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(71, 85, 105, 0.2);
+            transition: 0.25s ease;
+        }
+
+        .dashboard-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(71, 85, 105, 0.3);
+        }
+
+        /* MAIN */
+
+        .container {
+            width: 88%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-bottom: 60px;
+        }
+
+        /* SEARCH */
+
+        .search-box {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 22px;
+            padding: 24px;
+            box-shadow: 0 15px 45px rgba(37, 99, 235, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            margin-bottom: 22px;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 190px 125px;
+            gap: 10px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 18px;
+            border-radius: 13px;
+            border: 1px solid #d5def0;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        .search-input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
+        }
+
+        .market-select {
+            padding: 15px;
+            border-radius: 13px;
+            border: 1px solid #d5def0;
+            background: white;
+            font-size: 15px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .search-btn {
+            border: none;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+        }
+
+        /* MARKETPLACE BADGES */
+
+        .market-badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .market-badge {
+            padding: 9px 16px;
+            border-radius: 30px;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .market-badge:nth-child(2) {
+            background: #eef2ff;
+            color: #4f46e5;
+        }
+
+        .market-badge:nth-child(3) {
+            background: #ecfdf5;
+            color: #059669;
+        }
+
+        .market-badge:nth-child(4) {
+            background: #fff7ed;
+            color: #ea580c;
+        }
+
+        .market-badge:nth-child(5) {
+            background: #fdf2f8;
+            color: #be185d;
+        }
+
+        /* STAT CARDS */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 22px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.07);
+            border: 1px solid #eef2ff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #2563eb, #7c3aed);
+        }
+
+        .stat-card:nth-child(2)::before {
+            background: linear-gradient(90deg, #059669, #10b981);
+        }
+
+        .stat-card:nth-child(3)::before {
+            background: linear-gradient(90deg, #f97316, #db2777);
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 29px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        /* BEST PRICE */
+
+        .best-price-banner {
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+            border: 1px solid #a7f3d0;
+            border-radius: 20px;
+            padding: 20px 24px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            box-shadow: 0 10px 25px rgba(5, 150, 105, 0.08);
+        }
+
+        .best-price-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .trophy {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: #10b981;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+        }
+
+        .best-price-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #047857;
+        }
+
+        .best-price-value {
+            font-size: 25px;
+            font-weight: 800;
+            color: #065f46;
+            margin-top: 3px;
+        }
+
+        .best-price-market {
+            background: white;
+            padding: 10px 16px;
+            border-radius: 12px;
+            color: #047857;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        /* RESULTS */
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            gap: 10px;
+        }
+
+        .results-header h2 {
+            font-size: 25px;
+            color: #0f172a;
+        }
+
+        .results-count {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* PRODUCT GRID */
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #e7ecf7;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.14);
+        }
+
+        /* IMAGE */
+
+        .image-box {
+            height: 230px;
+            background: linear-gradient(135deg, #eff6ff, #eef2ff, #fdf2f8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 18px;
+            transition: 0.3s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.04);
+        }
+
+        .marketplace-label {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 5;
+            padding: 7px 11px;
+            border-radius: 9px;
+            background: rgba(255, 255, 255, 0.96);
+            color: #2563eb;
+            font-size: 11px;
+            font-weight: 800;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        /* PRODUCT CONTENT */
+
+        .product-content {
+            padding: 17px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .brand {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .product-name {
+            font-size: 16px;
+            line-height: 1.45;
+            color: #172554;
+            font-weight: 700;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 46px;
+        }
+
+        /* PRICE */
+
+        .price-row {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            flex-wrap: wrap;
+            margin-top: 13px;
+        }
+
+        .price {
+            font-size: 23px;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .mrp {
+            font-size: 13px;
+            color: #94a3b8;
+            text-decoration: line-through;
+        }
+
+        .discount {
+            background: #fff7ed;
+            color: #ea580c;
+            padding: 5px 8px;
+            border-radius: 7px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        /* RATING */
+
+        .rating-row {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        .rating {
+            color: #f59e0b;
+            font-weight: 800;
+        }
+
+        .reviews {
+            color: #64748b;
+        }
+
+        /* DEAL SCORE */
+
+        .deal-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 13px;
+            padding-top: 12px;
+            border-top: 1px solid #eef2f7;
+        }
+
+        .deal-label {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .deal-score {
+            background: #eef2ff;
+            color: #4f46e5;
+            padding: 5px 9px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 12px;
+        }
+
+        /* AVAILABILITY */
+
+        .availability {
+            margin-top: 9px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .available { color: #059669; }
+        .unavailable { color: #dc2626; }
+
+        /* DEAL BUTTON */
+
+        .deal-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-top: 15px;
+            padding: 12px 14px;
+            border-radius: 11px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white !important;
+            font-size: 13px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        .deal-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 9px 20px rgba(37, 99, 235, 0.25);
+        }
+
+        .deal-button.fallback {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+
+        /* EMPTY STATE */
+
+        .empty {
+            background: white;
+            border-radius: 20px;
+            padding: 55px 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+        }
+
+        .empty-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .empty h3 {
+            font-size: 22px;
+            color: #172554;
+            margin-bottom: 8px;
+        }
+
+        .empty p {
+            color: #64748b;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1100px) {
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .title-area h1 {
+                font-size: 36px;
+            }
+
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .best-price-banner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .container {
+                width: 94%;
+            }
+
+            .header {
+                padding-left: 3%;
+                padding-right: 3%;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
-<body class="bg-light">
+<body>
+<div class="page">
 
-<div class="container mt-4">
+    <!-- HEADER -->
+    <header class="header">
+        <div class="title-area">
+            <h1>🔎 Search Products</h1>
+            <p>Search across Amazon, Flipkart, Croma and Best Buy</p>
+        </div>
 
-    <h2 class="text-center text-primary mb-4">
-        Search Products
-    </h2>
+        <a href="{{ url_for('dashboard') }}" class="dashboard-btn">
+            Dashboard
+        </a>
+    </header>
 
-    <form method="POST">
+    <main class="container">
 
-        <div class="row">
-
-            <div class="col-md-10">
+        <!-- SEARCH BOX -->
+        <section class="search-box">
+            <form method="POST"
+                  action="{{ url_for('search') }}"
+                  class="search-form">
 
                 <input
                     type="text"
                     name="keyword"
-                    class="form-control"
-                    placeholder="Search Product..."
-                    required>
+                    class="search-input"
+                    value="{{ search_query or '' }}"
+                    placeholder="Search products, e.g. iPhone, Samsung, laptop"
+                    autocomplete="off"
+                >
 
-            </div>
+                <select name="marketplace" class="market-select">
+                    <option value="">All Marketplaces</option>
 
-            <div class="col-md-2">
+                    {% for marketplace in marketplaces %}
+                        {% set mp_clean = marketplace|string|replace('BestBuy', 'Best Buy')|replace('bestbuy', 'Best Buy')|title %}
+                        <option
+                            value="{{ marketplace }}"
+                            {% if selected_marketplace == marketplace %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ mp_clean }}
+                        </option>
+                    {% endfor %}
+                </select>
 
-                <button class="btn btn-primary w-100">
-                    Search
+                <button type="submit" class="search-btn">
+                    🔍 Search
                 </button>
+            </form>
 
+            <div class="market-badges">
+                <span class="market-badge">Amazon</span>
+                <span class="market-badge">Flipkart</span>
+                <span class="market-badge">Croma</span>
+                <span class="market-badge">Best Buy</span>
+            </div>
+        </section>
+
+        <!-- STATISTICS -->
+        {% if results %}
+        <section class="stats">
+            <div class="stat-card">
+                <div class="stat-label">Results</div>
+                <div class="stat-value">{{ results|length }}</div>
             </div>
 
+            <div class="stat-card">
+                <div class="stat-label">Lowest Price</div>
+                <div class="stat-value">
+                    {% if lowest_price and lowest_price.price is not none %}
+                        ₹{{ "{:,.2f}".format(lowest_price.price|float) }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Highest Deal Score</div>
+                <div class="stat-value">
+                    {% if best_deal and best_deal.deal_score is not none %}
+                        {{ best_deal.deal_score }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <!-- LOWEST PRICE -->
+        {% if lowest_price %}
+        <section class="best-price-banner">
+            <div class="best-price-left">
+                <div class="trophy">🏆</div>
+                <div>
+                    <div class="best-price-title">LOWEST PRICE FOUND</div>
+                    <div class="best-price-value">
+                        ₹{{ "{:,.2f}".format(lowest_price.price|float) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="best-price-market">
+                {{ lowest_price.marketplace|string|replace('BestBuy', 'Best Buy')|replace('bestbuy', 'Best Buy')|title }}
+            </div>
+        </section>
+        {% endif %}
+        {% endif %}
+
+        <!-- RESULTS HEADER -->
+        <div class="results-header">
+            <h2>Search Results</h2>
+
+            {% if search_query %}
+                <div class="results-count">
+                    Results for "{{ search_query }}"
+                </div>
+            {% endif %}
         </div>
 
-    </form>
+        <!-- PRODUCTS -->
+        {% if results %}
+        <section class="product-grid">
 
-    <br>
+            {% for product in results %}
+            <article class="product-card">
 
-    <div class="row">
+                <!-- IMAGE -->
+                <div class="image-box">
+                    <span class="marketplace-label">
+                        {{ product.marketplace|string|replace('BestBuy', 'Best Buy')|replace('bestbuy', 'Best Buy')|title }}
+                    </span>
 
-        <!-- AMAZON -->
+                    {% set img = product.image|string|trim %}
 
-        <div class="col-md-6">
-
-            <div class="card shadow">
-
-                <div class="card-header bg-warning">
-
-                    <h4>Amazon Results</h4>
-
+                    {% if img and img|lower not in ['nan', 'none', 'null', ''] %}
+                        <img
+                            src="{{ img if img.startswith('http://127.0.0.1:5000/static/') else url_for('image_proxy', url=img) }}"
+                            alt="{{ product.product_name }}"
+                            class="product-image"
+                            loading="lazy"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        >
+                        <div style="display:none; width:100%; height:100%;
+                                    align-items:center; justify-content:center;
+                                    color:#64748b; font-weight:700;">
+                            🛍️ Image not available
+                        </div>
+                    {% else %}
+                        <div style="width:100%; height:100%; display:flex;
+                                    align-items:center; justify-content:center;
+                                    color:#64748b; font-weight:700;">
+                            🛍️ Image not available
+                        </div>
+                    {% endif %}
                 </div>
 
-                <div class="card-body">
+                <!-- PRODUCT INFORMATION -->
+                <div class="product-content">
 
-                    {% if amazon_results %}
+                    {% if product.brand and product.brand|string|lower not in ['nan', 'none', ''] %}
+                        <div class="brand">{{ product.brand }}</div>
+                    {% endif %}
 
-                    <table class="table table-bordered table-hover">
+                    <div class="product-name">
+                        {{ product.product_name }}
+                    </div>
 
-                        <tr>
+                    <!-- PRICE -->
+                    <div class="price-row">
+                        <span class="price">
+                            {% if product.price is not none %}
+                                ₹{{ "{:,.2f}".format(product.price|float) }}
+                            {% else %}
+                                Price unavailable
+                            {% endif %}
+                        </span>
 
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Rating</th>
+                        {% if product.mrp is not none and product.mrp|string|lower not in ['nan', 'none', ''] and product.mrp|float > product.price|float %}
+                            <span class="mrp">
+                                ₹{{ "{:,.2f}".format(product.mrp|float) }}
+                            </span>
+                        {% elif product.original_price is defined and product.original_price is not none and product.original_price|string|lower not in ['nan', 'none', ''] and product.original_price|float > product.price|float %}
+                            <span class="mrp">
+                                ₹{{ "{:,.2f}".format(product.original_price|float) }}
+                            </span>
+                        {% endif %}
 
-                        </tr>
+                        {% if product.discount is not none and product.discount|string|lower not in ['nan', 'none', ''] and product.discount|float > 0 %}
+                            <span class="discount">
+                                {{ "%.0f"|format(product.discount|float) }}% OFF
+                            </span>
+                        {% endif %}
+                    </div>
 
-                        {% for product in amazon_results %}
+                    <!-- RATING -->
+                    <div class="rating-row">
+                        {% if product.rating is not none and product.rating|string|lower not in ['nan', 'none', ''] and product.rating|float > 0 %}
+                            <span class="rating">
+                                ⭐ {{ product.rating }}
+                            </span>
+                        {% else %}
+                            <span class="rating">Rating unavailable</span>
+                        {% endif %}
 
-                        <tr>
+                        <span class="reviews">
+                            {% if product.reviews is not none and product.reviews|string|lower not in ['nan', 'none', ''] and product.reviews|float > 0 %}
+                                {{ "{:,.0f}".format(product.reviews|float) }} reviews
+                            {% else %}
+                                No reviews
+                            {% endif %}
+                        </span>
+                    </div>
 
-                            <td>{{ product.product_name }}</td>
+                    <!-- DEAL SCORE -->
+                    <div class="deal-row">
+                        <span class="deal-label">Deal Score</span>
+                        <span class="deal-score">
+                            {% if product.deal_score is defined and product.deal_score is not none %}
+                                {{ product.deal_score }}
+                            {% else %}
+                                —
+                            {% endif %}
+                        </span>
+                    </div>
 
-                            <td>₹ {{ product.discounted_price }}</td>
+                    <!-- AVAILABILITY -->
+                    <div class="availability">
+                        {% set availability = product.availability|string|lower|trim %}
 
-                            <td>{{ product.rating }}</td>
+                        {% if 'out' in availability or 'unavailable' in availability or 'not available' in availability %}
+                            <span class="unavailable">● Out of stock</span>
+                        {% elif availability in ['', 'nan', 'none', 'null'] %}
+                            <span style="color:#64748b;">● Availability unknown</span>
+                        {% else %}
+                            <span class="available">● {{ product.availability }}</span>
+                        {% endif %}
+                    </div>
 
-                        </tr>
+                    <!-- PRODUCT LINK -->
+                    {% set direct_url = product.product_url|string|trim %}
+                    {% set marketplace = product.marketplace|string|lower|replace(' ', '')|replace('_', '')|trim %}
+                    {% set product_search = product.product_name|urlencode %}
 
-                        {% endfor %}
+                    {% if direct_url and direct_url|lower not in ['nan', 'none', 'null', '#', ''] and direct_url.startswith('http') %}
+                        <a
+                            href="{{ direct_url }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="deal-button">
+                            🛒 View Deal
+                        </a>
 
-                    </table>
+                    {% elif marketplace == 'bestbuy' %}
+                        <a
+                            href="https://www.bestbuy.com/site/searchpage.jsp?st={{ product_search }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="deal-button fallback">
+                            🛒 Search on Best Buy
+                        </a>
+
+                    {% elif marketplace == 'amazon' %}
+                        <a
+                            href="https://www.amazon.in/s?k={{ product_search }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="deal-button fallback">
+                            🛒 Search on Amazon
+                        </a>
+
+                    {% elif marketplace == 'flipkart' %}
+                        <a
+                            href="https://www.flipkart.com/search?q={{ product_search }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="deal-button fallback">
+                            🛒 Search on Flipkart
+                        </a>
+
+                    {% elif marketplace == 'croma' %}
+                        <a
+                            href="https://www.croma.com/searchB?q={{ product_search }}%3Arelevance"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="deal-button fallback">
+                            🛒 Search on Croma
+                        </a>
 
                     {% else %}
-
-                    <p class="text-danger">
-                        No Amazon products found.
-                    </p>
-
+                        <button type="button" class="deal-button fallback" disabled>
+                            Deal Link Unavailable
+                        </button>
                     {% endif %}
 
                 </div>
+            </article>
+            {% endfor %}
+        </section>
 
-            </div>
+        {% elif search_query %}
+        <!-- NO RESULTS -->
+        <section class="empty">
+            <div class="empty-icon">🔍</div>
+            <h3>No products found</h3>
+            <p>
+                Try another product name or search across all marketplaces.
+            </p>
+        </section>
 
-        </div>
+        {% else %}
+        <!-- INITIAL STATE -->
+        <section class="empty">
+            <div class="empty-icon">🛍️</div>
+            <h3>Start searching</h3>
+            <p>
+                Search for a product to view available listings from
+                Amazon, Flipkart, Croma and Best Buy.
+            </p>
+        </section>
+        {% endif %}
 
-        <!-- FLIPKART -->
-
-        <div class="col-md-6">
-
-            <div class="card shadow">
-
-                <div class="card-header bg-primary text-white">
-
-                    <h4>Flipkart Results</h4>
-
-                </div>
-
-                <div class="card-body">
-
-                    {% if flipkart_results %}
-
-                    <table class="table table-bordered table-hover">
-
-                        <tr>
-
-                            <th>Product</th>
-                            <th>Brand</th>
-                            <th>Price</th>
-
-                        </tr>
-
-                        {% for product in flipkart_results %}
-
-                        <tr>
-
-                            <td>{{ product.Name }}</td>
-
-                            <td>{{ product.Brand }}</td>
-
-                            <td>₹ {{ product['Selling Price'] }}</td>
-
-                        </tr>
-
-                        {% endfor %}
-
-                    </table>
-
-                    {% else %}
-
-                    <p class="text-danger">
-                        No Flipkart products found.
-                    </p>
-
-                    {% endif %}
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <br>
-
-    <div class="text-center">
-
-        <a href="/dashboard" class="btn btn-secondary">
-            Back to Dashboard
-        </a>
-
-    </div>
-
+    </main>
 </div>
-
 </body>
-
 </html>

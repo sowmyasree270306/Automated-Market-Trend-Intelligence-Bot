@@ -7,64 +7,224 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Market Analytics</title>
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet">
+    <title>Market Bot | Market Insights</title>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
     <style>
 
-        body {
-            background: #f4f6f9;
+        * {
+            box-sizing: border-box;
         }
 
-        .page-title {
-            color: #0d6efd;
-            font-weight: 700;
+        body {
+            margin: 0;
+            background: #f4f7ff;
+            color: #172033;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .page {
+            max-width: 1250px;
+            margin: auto;
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            color: #2563eb;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #64748b;
+        }
+
+        .back-btn {
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #1d4ed8;
+            color: white;
+        }
+
+        /* ---------------- STAT CARDS ---------------- */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 22px;
         }
 
         .stat-card {
             background: white;
-            border: none;
-            border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            height: 100%;
+            border-radius: 17px;
+            padding: 22px;
+            box-shadow: 0 6px 22px rgba(15, 23, 42, 0.07);
         }
 
-        .stat-card h6 {
-            color: #6c757d;
+        .stat-title {
+            color: #64748b;
+            font-size: 14px;
             font-weight: 600;
         }
 
-        .stat-number {
+        .stat-value {
             font-size: 28px;
-            font-weight: bold;
-            margin-top: 10px;
+            font-weight: 800;
+            color: #2563eb;
+            margin-top: 7px;
+        }
+
+        /* ---------------- CHARTS ---------------- */
+
+        .charts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
 
         .chart-card {
             background: white;
-            border: none;
-            border-radius: 12px;
+            border-radius: 18px;
             padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            box-shadow: 0 6px 22px rgba(15, 23, 42, 0.07);
+        }
+
+        .chart-card h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 15px;
         }
 
         .chart-container {
             position: relative;
-            height: 350px;
+            height: 320px;
         }
 
-        .table-card {
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* ---------------- DEALS ---------------- */
+
+        .deals-card {
             background: white;
+            border-radius: 18px;
+            padding: 22px;
+            margin-top: 20px;
+            box-shadow: 0 6px 22px rgba(15, 23, 42, 0.07);
+        }
+
+        .deals-card h3 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .deal-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 14px 0;
+            border-bottom: 1px solid #edf1f5;
+        }
+
+        .deal-row:last-child {
+            border-bottom: none;
+        }
+
+        .deal-name {
+            font-weight: 700;
+        }
+
+        .deal-market {
+            color: #64748b;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .deal-score {
+            background: #dcfce7;
+            color: #15803d;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .empty-deals {
+            color: #64748b;
+            padding: 20px 0;
+        }
+
+        /* ---------------- DATA NOTE ---------------- */
+
+        .data-note {
+            margin-top: 20px;
+            padding: 17px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
             border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            color: #1e40af;
+        }
+
+        /* ---------------- RESPONSIVE ---------------- */
+
+        @media (max-width: 1000px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .charts {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .page {
+                padding: 18px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
         }
 
     </style>
@@ -74,336 +234,269 @@
 
 <body>
 
-
-<div class="container-fluid p-4">
-
-
-    <!-- ==========================================
-         PAGE TITLE
-         ========================================== -->
-
-    <h2 class="text-center page-title mb-4">
-
-        Automated Market & Trend Intelligence
-
-    </h2>
+<div class="page">
 
 
-    <!-- ==========================================
-         SUMMARY CARDS
-         ========================================== -->
+    <!-- ================= HEADER ================= -->
 
-    <div class="row g-4 mb-4">
+    <div class="header">
+
+        <div>
+
+            <h1>
+                📊 Market Insights
+            </h1>
+
+            <p>
+                Compare product-marketplace information across Amazon,
+                Flipkart, Walmart and Best Buy.
+            </p>
+
+        </div>
 
 
-        <!-- TOTAL PRODUCTS -->
+        <a
+            href="/dashboard"
+            class="back-btn"
+        >
+            Dashboard
+        </a>
 
-        <div class="col-md-3">
+    </div>
 
-            <div class="stat-card">
 
-                <h6>Total API Products</h6>
 
-                <div class="stat-number">
+    <!-- ================= STAT CARDS ================= -->
 
-                    {{ total_api_products }}
+    <div class="stats">
 
-                </div>
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Total Products
+            </div>
+
+            <div class="stat-value">
+                {{ total_products }}
+            </div>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Average Price
+            </div>
+
+            <div class="stat-value">
+                ₹{{ "{:,.0f}".format(avg_price|float) }}
+            </div>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Average Rating
+            </div>
+
+            <div class="stat-value">
+                ⭐ {{ avg_rating }}
+            </div>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Average Discount
+            </div>
+
+            <div class="stat-value">
+                {{ avg_discount }}%
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= CHARTS ================= -->
+
+    <div class="charts">
+
+
+        <!-- MARKETPLACE PRODUCT COUNT -->
+
+        <div class="chart-card">
+
+            <h3>
+                Products by Marketplace
+            </h3>
+
+            <div class="chart-container">
+
+                <canvas id="marketCountChart"></canvas>
 
             </div>
 
         </div>
+
 
 
         <!-- AVERAGE PRICE -->
 
-        <div class="col-md-3">
+        <div class="chart-card">
 
-            <div class="stat-card">
+            <h3>
+                Average Price by Marketplace
+            </h3>
 
-                <h6>Average Price</h6>
+            <div class="chart-container">
 
-                <div class="stat-number">
-
-                    ${{ avg_price }}
-
-                </div>
+                <canvas id="priceChart"></canvas>
 
             </div>
 
         </div>
 
-
-        <!-- AVERAGE RATING -->
-
-        <div class="col-md-3">
-
-            <div class="stat-card">
-
-                <h6>Average Rating</h6>
-
-                <div class="stat-number">
-
-                    ⭐ {{ avg_rating }}
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- AVERAGE DISCOUNT -->
-
-        <div class="col-md-3">
-
-            <div class="stat-card">
-
-                <h6>Average Discount</h6>
-
-                <div class="stat-number">
-
-                    {{ avg_discount }}%
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-
-    <!-- ==========================================
-         PRICE TREND
-         ========================================== -->
-
-    <div class="chart-card mb-4">
-
-        <h5 class="mb-3">
-
-            📈 Average Price Trend
-
-        </h5>
-
-        <div class="chart-container">
-
-            <canvas id="priceChart"></canvas>
-
-        </div>
-
-    </div>
-
-
-    <!-- ==========================================
-         DISCOUNT + RATING
-         ========================================== -->
-
-    <div class="row g-4 mb-4">
-
-
-        <!-- DISCOUNT -->
-
-        <div class="col-md-6">
-
-            <div class="chart-card">
-
-                <h5 class="mb-3">
-
-                    💰 Average Discount Trend
-
-                </h5>
-
-                <div class="chart-container">
-
-                    <canvas id="discountChart"></canvas>
-
-                </div>
-
-            </div>
-
-        </div>
 
 
         <!-- RATING -->
 
-        <div class="col-md-6">
+        <div class="chart-card">
 
-            <div class="chart-card">
+            <h3>
+                Average Rating by Marketplace
+            </h3>
 
-                <h5 class="mb-3">
+            <div class="chart-container">
 
-                    ⭐ Average Rating Trend
-
-                </h5>
-
-                <div class="chart-container">
-
-                    <canvas id="ratingChart"></canvas>
-
-                </div>
+                <canvas id="ratingChart"></canvas>
 
             </div>
 
         </div>
 
 
-    </div>
+
+        <!-- DISCOUNT -->
+
+        <div class="chart-card">
+
+            <h3>
+                Average Discount by Marketplace
+            </h3>
+
+            <div class="chart-container">
+
+                <canvas id="discountChart"></canvas>
+
+            </div>
+
+        </div>
 
 
-    <!-- ==========================================
-         STOCK TREND
-         ========================================== -->
 
-    <div class="chart-card mb-4">
+        <!-- CATEGORY -->
 
-        <h5 class="mb-3">
+        <div class="chart-card full-width">
 
-            📦 Average Stock Trend
+            <h3>
+                Products by Category
+            </h3>
 
-        </h5>
+            <div class="chart-container">
 
-        <div class="chart-container">
+                <canvas id="categoryChart"></canvas>
 
-            <canvas id="stockChart"></canvas>
+            </div>
 
         </div>
 
     </div>
 
 
-    <!-- ==========================================
-         CATEGORY CHART
-         ========================================== -->
 
-    <div class="chart-card mb-4">
+    <!-- ================= TOP DEALS ================= -->
 
-        <h5 class="mb-3">
+    <div class="deals-card">
 
-            🏷️ Products by Category
-
-        </h5>
-
-        <div class="chart-container">
-
-            <canvas id="categoryChart"></canvas>
-
-        </div>
-
-    </div>
+        <h3>
+            🏷️ Top Deal Scores
+        </h3>
 
 
-    <!-- ==========================================
-         TOP DISCOUNTED PRODUCTS
-         ========================================== -->
+        {% if top_products %}
 
-    <div class="table-card mb-4">
+            {% for product in top_products[:10] %}
 
-        <h5 class="mb-3">
+                <div class="deal-row">
 
-            🔥 Top 10 Discounted Products
+                    <div>
 
-        </h5>
+                        <div class="deal-name">
+                            {{ product.product_name }}
+                        </div>
 
+                        <div class="deal-market">
 
-        <div class="table-responsive">
+                            {{ product.marketplace }}
 
-            <table class="table table-bordered table-hover">
+                            ·
 
+                            ₹{{ "{:,.0f}".format(product.price|float) }}
 
-                <thead class="table-dark">
-
-                    <tr>
-
-                        <th>#</th>
-
-                        <th>Product</th>
-
-                        <th>Price</th>
-
-                        <th>Discount</th>
-
-                        <th>Rating</th>
-
-                        <th>Stock</th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody>
-
-
-                    {% for product in top_products %}
-
-                    <tr>
-
-                        <td>
-
-                            {{ loop.index }}
-
-                        </td>
-
-                        <td>
-
-                            {{ product.title }}
-
-                        </td>
-
-                        <td>
-
-                            ${{ product.price }}
-
-                        </td>
-
-                        <td>
-
-                            {{ product.discount_percentage }}%
-
-                        </td>
-
-                        <td>
+                            ·
 
                             ⭐ {{ product.rating }}
 
-                        </td>
+                        </div>
 
-                        <td>
-
-                            {{ product.stock }}
-
-                        </td>
-
-                    </tr>
-
-                    {% endfor %}
+                    </div>
 
 
-                </tbody>
+                    <div class="deal-score">
 
+                        Score {{ product.deal_score }}
 
-            </table>
+                    </div>
 
-        </div>
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty-deals">
+
+                No deal information is currently available.
+
+            </div>
+
+        {% endif %}
 
     </div>
 
 
-    <!-- ==========================================
-         BACK BUTTON
-         ========================================== -->
 
-    <div class="text-center mb-4">
+    <!-- ================= DATA NOTE ================= -->
 
-        <a
-            href="/dashboard"
-            class="btn btn-secondary">
+    <div class="data-note">
 
-            Back to Dashboard
+        <strong>Data note:</strong>
 
-        </a>
+        These insights summarize the product catalog currently stored
+        in the project. They should not be interpreted as live
+        historical price measurements.
 
     </div>
 
@@ -411,312 +504,382 @@
 </div>
 
 
-<!-- ==========================================
-     JAVASCRIPT
-     ========================================== -->
+
+<!-- ========================================================= -->
+<!-- IMPORTANT: DATA IS STORED AS JSON, NOT DIRECTLY IN JS     -->
+<!-- ========================================================= -->
+
+
+<script
+    type="application/json"
+    id="marketplaceNamesData"
+>
+{{ marketplace_names|tojson }}
+</script>
+
+
+<script
+    type="application/json"
+    id="marketplaceCountsData"
+>
+{{ marketplace_counts|tojson }}
+</script>
+
+
+<script
+    type="application/json"
+    id="marketplacePricesData"
+>
+{{ marketplace_prices|tojson }}
+</script>
+
+
+<script
+    type="application/json"
+    id="marketplaceRatingsData"
+>
+{{ marketplace_ratings|tojson }}
+</script>
+
+
+<script
+    type="application/json"
+    id="marketplaceDiscountsData"
+>
+{{ marketplace_discounts|tojson }}
+</script>
+
+
+<script
+    type="application/json"
+    id="categoriesData"
+>
+{{ categories|tojson }}
+</script>
+
+
+<script
+    type="application/json"
+    id="categoryCountsData"
+>
+{{ category_counts|tojson }}
+</script>
+
+
+
+<!-- ========================================================= -->
+<!-- NORMAL JAVASCRIPT                                         -->
+<!-- ========================================================= -->
 
 <script>
 
-document.addEventListener("DOMContentLoaded", function () {
+function readJsonData(elementId) {
+
+    const element = document.getElementById(elementId);
+
+    if (!element) {
+        return [];
+    }
+
+    try {
+
+        return JSON.parse(element.textContent);
+
+    } catch (error) {
+
+        console.error(
+            "Could not read chart data:",
+            elementId,
+            error
+        );
+
+        return [];
+
+    }
+
+}
 
 
-    /*
-    ------------------------------------------------
-    API DATA FROM FLASK
-    ------------------------------------------------
-    */
+/* ---------------- DATA ---------------- */
 
-    const dates =
-        JSON.parse('{{ daily_dates | tojson | safe }}');
+const labels =
+    readJsonData("marketplaceNamesData");
 
-    const prices =
-        JSON.parse('{{ daily_prices | tojson | safe }}');
+const counts =
+    readJsonData("marketplaceCountsData");
 
-    const discounts =
-        JSON.parse('{{ daily_discounts | tojson | safe }}');
+const prices =
+    readJsonData("marketplacePricesData");
 
-    const ratings =
-        JSON.parse('{{ daily_ratings | tojson | safe }}');
+const ratings =
+    readJsonData("marketplaceRatingsData");
 
-    const stock =
-        JSON.parse('{{ daily_stock | tojson | safe }}');
+const discounts =
+    readJsonData("marketplaceDiscountsData");
 
-    const apiCategories =
-        JSON.parse('{{ categories | tojson | safe }}');
+const categories =
+    readJsonData("categoriesData");
 
-    const categoryCounts =
-        JSON.parse('{{ category_counts | tojson | safe }}');
+const categoryCounts =
+    readJsonData("categoryCountsData");
 
 
-    /*
-    ------------------------------------------------
-    PRICE CHART
-    ------------------------------------------------
-    */
+/* ---------------- COMMON OPTIONS ---------------- */
 
-    const priceCanvas =
-        document.getElementById("priceChart");
+function commonChartOptions() {
 
-    if (priceCanvas) {
+    return {
 
-        new Chart(priceCanvas, {
+        responsive: true,
 
-            type: "line",
+        maintainAspectRatio: false,
 
-            data: {
+        plugins: {
 
-                labels: dates,
+            legend: {
 
-                datasets: [{
+                display: true
 
-                    label: "Average Price",
+            }
 
-                    data: prices,
+        },
 
-                    borderWidth: 2,
+        scales: {
 
-                    tension: 0.3,
+            y: {
 
-                    fill: false
+                beginAtZero: true
 
-                }]
+            }
 
-            },
+        }
 
-            options: {
+    };
 
-                responsive: true,
+}
 
-                maintainAspectRatio: false,
 
-                plugins: {
+/* ========================================================= */
+/* PRODUCTS BY MARKETPLACE                                  */
+/* ========================================================= */
 
-                    legend: {
+new Chart(
 
-                        display: true
+    document.getElementById("marketCountChart"),
 
-                    }
+    {
+
+        type: "bar",
+
+        data: {
+
+            labels: labels,
+
+            datasets: [
+
+                {
+
+                    label: "Products",
+
+                    data: counts
 
                 }
 
-            }
+            ]
 
-        });
+        },
 
-    }
-
-
-    /*
-    ------------------------------------------------
-    DISCOUNT CHART
-    ------------------------------------------------
-    */
-
-    const discountCanvas =
-        document.getElementById("discountChart");
-
-    if (discountCanvas) {
-
-        new Chart(discountCanvas, {
-
-            type: "line",
-
-            data: {
-
-                labels: dates,
-
-                datasets: [{
-
-                    label: "Average Discount (%)",
-
-                    data: discounts,
-
-                    borderWidth: 2,
-
-                    tension: 0.3,
-
-                    fill: false
-
-                }]
-
-            },
-
-            options: {
-
-                responsive: true,
-
-                maintainAspectRatio: false
-
-            }
-
-        });
+        options: commonChartOptions()
 
     }
 
+);
 
-    /*
-    ------------------------------------------------
-    RATING CHART
-    ------------------------------------------------
-    */
 
-    const ratingCanvas =
-        document.getElementById("ratingChart");
+/* ========================================================= */
+/* AVERAGE PRICE                                             */
+/* ========================================================= */
 
-    if (ratingCanvas) {
+new Chart(
 
-        new Chart(ratingCanvas, {
+    document.getElementById("priceChart"),
 
-            type: "line",
+    {
 
-            data: {
+        type: "bar",
 
-                labels: dates,
+        data: {
 
-                datasets: [{
+            labels: labels,
+
+            datasets: [
+
+                {
+
+                    label: "Average Price (₹)",
+
+                    data: prices
+
+                }
+
+            ]
+
+        },
+
+        options: commonChartOptions()
+
+    }
+
+);
+
+
+/* ========================================================= */
+/* AVERAGE RATING                                           */
+/* ========================================================= */
+
+new Chart(
+
+    document.getElementById("ratingChart"),
+
+    {
+
+        type: "bar",
+
+        data: {
+
+            labels: labels,
+
+            datasets: [
+
+                {
 
                     label: "Average Rating",
 
-                    data: ratings,
+                    data: ratings
 
-                    borderWidth: 2,
+                }
 
-                    tension: 0.3,
+            ]
 
-                    fill: false
+        },
 
-                }]
+        options: {
 
-            },
+            responsive: true,
 
-            options: {
+            maintainAspectRatio: false,
 
-                responsive: true,
+            scales: {
 
-                maintainAspectRatio: false,
+                y: {
 
-                scales: {
+                    beginAtZero: true,
 
-                    y: {
+                    min: 0,
 
-                        min: 0,
-
-                        max: 5
-
-                    }
+                    max: 5
 
                 }
 
             }
 
-        });
+        }
 
     }
 
+);
 
-    /*
-    ------------------------------------------------
-    STOCK CHART
-    ------------------------------------------------
-    */
 
-    const stockCanvas =
-        document.getElementById("stockChart");
+/* ========================================================= */
+/* AVERAGE DISCOUNT                                         */
+/* ========================================================= */
 
-    if (stockCanvas) {
+new Chart(
 
-        new Chart(stockCanvas, {
+    document.getElementById("discountChart"),
 
-            type: "line",
+    {
 
-            data: {
+        type: "bar",
 
-                labels: dates,
+        data: {
 
-                datasets: [{
+            labels: labels,
 
-                    label: "Average Stock",
+            datasets: [
 
-                    data: stock,
+                {
 
-                    borderWidth: 2,
+                    label: "Average Discount (%)",
 
-                    tension: 0.3,
+                    data: discounts
 
-                    fill: false
+                }
 
-                }]
+            ]
 
-            },
+        },
 
-            options: {
-
-                responsive: true,
-
-                maintainAspectRatio: false
-
-            }
-
-        });
+        options: commonChartOptions()
 
     }
 
+);
 
-    /*
-    ------------------------------------------------
-    CATEGORY CHART
-    ------------------------------------------------
-    */
 
-    const categoryCanvas =
-        document.getElementById("categoryChart");
+/* ========================================================= */
+/* PRODUCTS BY CATEGORY                                     */
+/* ========================================================= */
 
-    if (categoryCanvas) {
+new Chart(
 
-        new Chart(categoryCanvas, {
+    document.getElementById("categoryChart"),
 
-            type: "bar",
+    {
 
-            data: {
+        type: "bar",
 
-                labels: apiCategories,
+        data: {
 
-                datasets: [{
+            labels: categories,
 
-                    label: "Number of Products",
+            datasets: [
 
-                    data: categoryCounts,
+                {
 
-                    borderWidth: 1
+                    label: "Products",
 
-                }]
+                    data: categoryCounts
 
-            },
+                }
 
-            options: {
+            ]
 
-                responsive: true,
+        },
 
-                maintainAspectRatio: false,
+        options: {
 
-                plugins: {
+            responsive: true,
 
-                    legend: {
+            maintainAspectRatio: false,
 
-                        display: false
+            indexAxis: "y",
 
-                    }
+            scales: {
+
+                x: {
+
+                    beginAtZero: true
 
                 }
 
             }
 
-        });
+        }
 
     }
 
-
-});
+);
 
 </script>
 
